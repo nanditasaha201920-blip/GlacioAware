@@ -10,7 +10,7 @@ This platform was developed to bridge environmental science, geospatial technolo
 
 ## Live Website
 
-https://glacioaware.vercel.app
+[https://glacioaware.vercel.app](https://glacio-aware-3a1u.vercel.app/)
 
 ---
 
