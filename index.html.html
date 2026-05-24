@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlacioAware — Climate Resilience Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a2332;--ink-mid:#3b4f62;--ink-soft:#6b7f92;
+  --surface:#f5f2ec;--surface-2:#ede9e0;--surface-3:#e2ddd3;
+  --teal:#1f6e5e;--teal-light:#2d8f7a;--teal-pale:#d4ede8;--teal-deep:#144a3f;
+  --amber:#8c5a1a;--amber-pale:#f2e8d5;
+  --risk-low:#9FE1CB;--risk-med:#1D9E75;--risk-high:#0F6E56;--risk-vhigh:#085041;--risk-crit:#04342C;
+  --border:rgba(26,35,50,0.1);--border-strong:rgba(26,35,50,0.2);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--surface);color:var(--ink);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.25;color:var(--ink)}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+.container{max-width:1080px;margin:0 auto;padding:0 2rem}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:.9rem 0}
+nav .inner{max-width:1080px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;letter-spacing:.02em;color:var(--ink)}
+.nav-brand span{color:var(--teal)}
+nav ul{list-style:none;display:flex;gap:1.75rem}
+nav ul a{font-size:.78rem;font-weight:400;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-mid);transition:color .2s}
+nav ul a:hover{color:var(--teal);text-decoration:none}
+
+/* HERO */
+.hero{padding:5rem 0 4.5rem;border-bottom:1px solid var(--border)}
+.hero-label{display:inline-block;font-size:.72rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);border:1px solid var(--teal);padding:.3rem .75rem;border-radius:2px;margin-bottom:1.75rem}
+.hero h1{font-size:clamp(2rem,4.5vw,3.4rem);font-weight:500;max-width:720px;color:var(--ink);margin-bottom:1.25rem}
+.hero h1 em{font-style:italic;color:var(--teal)}
+.hero p{font-size:1rem;color:var(--ink-mid);max-width:560px;margin-bottom:2rem;font-weight:300}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{display:inline-block;padding:.6rem 1.4rem;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:400;letter-spacing:.04em;border-radius:2px;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--teal);color:#fff;border:1px solid var(--teal)}
+.btn-primary:hover{background:var(--teal-light);border-color:var(--teal-light);text-decoration:none}
+.btn-outline{background:transparent;color:var(--ink-mid);border:1px solid var(--border-strong)}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal);text-decoration:none}
+
+/* SECTIONS */
+section{padding:4.5rem 0;border-bottom:1px solid var(--border)}
+.section-label{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:400;margin-bottom:.6rem}
+.section-title{font-size:clamp(1.6rem,2.8vw,2.3rem);margin-bottom:.9rem}
+.section-subtitle{font-size:.95rem;color:var(--ink-mid);font-weight:300;max-width:580px;margin-bottom:2.5rem}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 2fr;gap:3.5rem;align-items:start}
+.about-portrait{width:100%;aspect-ratio:3/4;background:var(--teal-pale);border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.about-initials{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:400;color:var(--teal);letter-spacing:.1em}
+.about-bio{font-size:.95rem;color:var(--ink-mid);line-height:1.85}
+.about-bio p{margin-bottom:1rem}
+.about-bio strong{color:var(--ink);font-weight:500}
+
+/* WHY */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
+.why-quote{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-style:italic;font-weight:400;color:var(--ink);line-height:1.5;border-left:2px solid var(--teal);padding-left:1.4rem;margin-bottom:1.25rem}
+.why-text{font-size:.92rem;color:var(--ink-mid);line-height:1.85}
+.why-text p{margin-bottom:.9rem}
+.stat-block{background:var(--teal-pale);padding:1.75rem;border-radius:2px}
+.stat-block h3{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:1.25rem}
+.stat-row{display:flex;justify-content:space-between;padding:.55rem 0;border-bottom:1px solid rgba(31,110,94,.15);font-size:.85rem}
+.stat-row:last-child{border-bottom:none}
+.stat-val{font-weight:500;color:var(--teal)}
+
+/* RESEARCH PROJECTS */
+.rp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.rp-card{padding:2rem;border:1px solid var(--border);border-radius:2px;background:var(--surface);transition:border-color .2s}
+.rp-card:hover{border-color:var(--teal)}
+.rp-tag{font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:.6rem}
+.rp-card h3{font-size:1.15rem;margin-bottom:.6rem}
+.rp-card p{font-size:.86rem;color:var(--ink-mid);line-height:1.75;margin-bottom:1rem}
+.rp-meta{font-size:.75rem;color:var(--ink-soft);padding-top:.75rem;border-top:1px solid var(--border)}
+.rp-status{display:inline-block;font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;padding:.2rem .55rem;border-radius:2px;background:var(--amber-pale);color:var(--amber)}
+
+/* DATA VISUALS */
+.visuals-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+.visual-panel{background:var(--surface-2);border:1px solid var(--border);border-radius:2px;padding:1.5rem}
+.visual-panel h4{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1rem}
+.visual-full{background:var(--surface-2);border:1px solid var(--border);border-radius:2px;padding:1.5rem}
+.visual-full h4{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1rem}
+.visual-note{font-size:.75rem;color:var(--ink-soft);margin-top:.75rem}
+
+/* BANGLADESH */
+.bangladesh-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
+.vulnerability-list{list-style:none;margin-top:1.25rem}
+.vulnerability-list li{padding:.85rem 0;border-bottom:1px solid var(--border);display:flex;gap:.9rem;align-items:flex-start}
+.vulnerability-list li:last-child{border-bottom:none}
+.vuln-num{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--teal);min-width:2.2rem}
+.vuln-content h4{font-size:.92rem;margin-bottom:.2rem}
+.vuln-content p{font-size:.83rem;color:var(--ink-mid)}
+
+/* INSIGHTS */
+.insights-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:2.5rem}
+.insight-card{background:var(--surface);padding:1.5rem 1.25rem;text-align:center}
+.insight-num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:500;color:var(--teal);display:block;margin-bottom:.2rem}
+.insight-label{font-size:.78rem;color:var(--ink-soft)}
+.insight-desc{font-size:.75rem;color:var(--ink-mid);margin-top:.35rem}
+.methods-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1.75rem}
+.method-tag{font-size:.73rem;letter-spacing:.03em;padding:.3rem .75rem;border:1px solid var(--border-strong);border-radius:2px;color:var(--ink-mid);background:var(--surface-2)}
+
+/* SOURCES */
+.sources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.source-card{padding:1.35rem;border:1px solid var(--border);border-radius:2px;background:var(--surface)}
+.source-card h4{font-family:'Outfit',sans-serif;font-size:.87rem;font-weight:500;margin-bottom:.3rem}
+.source-card p{font-size:.78rem;color:var(--ink-soft)}
+.source-badge{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--teal-pale);padding:.15rem .45rem;border-radius:2px;display:inline-block;margin-bottom:.45rem}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem}
+.interest-list{list-style:none;margin-top:.75rem}
+.interest-list li{padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.88rem;color:var(--ink-mid);display:flex;align-items:center;gap:.55rem}
+.interest-list li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--teal);flex-shrink:0}
+.pub-list{list-style:none;margin-top:.75rem}
+.pub-item{padding:.9rem 0;border-bottom:1px solid var(--border)}
+.pub-type{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.25rem}
+.pub-title{font-size:.9rem;font-weight:400;margin-bottom:.18rem;color:var(--ink)}
+.pub-meta{font-size:.76rem;color:var(--ink-soft)}
+
+/* FUTURE */
+.future-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
+.future-card{padding:1.75rem;border:1px solid var(--border);border-radius:2px;background:var(--surface);position:relative}
+.future-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--teal);border-radius:2px 0 0 2px}
+.future-card h3{font-size:1.05rem;margin-bottom:.45rem}
+.future-card p{font-size:.83rem;color:var(--ink-mid)}
+
+/* CONNECT */
+.connect-row{display:flex;gap:.85rem;flex-wrap:wrap;margin-top:1.4rem}
+.connect-link{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1.1rem;border:1px solid var(--border-strong);border-radius:2px;font-size:.8rem;color:var(--ink-mid);transition:all .2s}
+.connect-link:hover{border-color:var(--teal);color:var(--teal);text-decoration:none}
+.connect-link svg{width:14px;height:14px;flex-shrink:0}
+
+/* ETHICS */
+.ethics-banner{background:var(--surface-2);border:1px solid var(--border);padding:1.4rem 1.75rem;border-radius:2px;margin-top:2.5rem;font-size:.86rem;color:var(--ink-mid);line-height:1.75}
+.ethics-banner strong{color:var(--ink);font-weight:500}
+
+/* FOOTER */
+footer{padding:2.25rem 0;background:var(--ink)}
+.footer-inner{max-width:1080px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:rgba(255,255,255,.9)}
+.footer-credit{font-size:.77rem;color:rgba(255,255,255,.4);margin-top:.25rem}
+.footer-links{display:flex;gap:1.4rem}
+.footer-links a{font-size:.77rem;color:rgba(255,255,255,.42);transition:color .2s}
+.footer-links a:hover{color:rgba(255,255,255,.85);text-decoration:none}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:768px){
+  .why-grid,.bangladesh-grid,.about-grid,.two-col{grid-template-columns:1fr;gap:2rem}
+  .rp-grid,.visuals-grid,.future-grid{grid-template-columns:1fr}
+  .research-grid,.insights-grid{grid-template-columns:1fr 1fr}
+  .sources-grid{grid-template-columns:1fr 1fr}
+  nav ul{gap:1rem}
+  nav ul a{font-size:.72rem}
+  .footer-inner{flex-direction:column;gap:.85rem;text-align:center}
+  .footer-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <span class="nav-brand">Glacio<span>Aware</span></span>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#research-projects">Research</a></li>
+      <li><a href="#visuals">Data</a></li>
+      <li><a href="#bangladesh">Bangladesh</a></li>
+      <li><a href="#publications">Work</a></li>
+      <li><a href="#connect">Connect</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-label">Climate Resilience Research Initiative</div>
+    <h1>Geospatial intelligence for<br><em>flood-vulnerable</em> regions</h1>
+    <p>An independent research platform integrating remote sensing, spatial analysis, and environmental science to understand climate vulnerability and adaptive capacity in South Asia.</p>
+    <div class="hero-actions">
+      <a href="#research-projects" class="btn btn-primary">View Research</a>
+      <a href="#publications" class="btn btn-outline">Publications &amp; Work</a>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT THE CREATOR -->
+<section id="about">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">About the Creator</p>
+      <h2 class="section-title">Nandita Saha</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-portrait">
+        <span class="about-initials">NS</span>
+      </div>
+      <div>
+        <div class="about-bio">
+          <p>GlacioAware was developed by <strong>Nandita Saha</strong> as an interdisciplinary environmental intelligence initiative exploring climate resilience, flood vulnerability, and sustainability-focused technology in climate-sensitive regions.</p>
+          <p>Growing up in Bangladesh — one of the world's most climate-exposed countries — shaped an early and sustained interest in the intersection of environmental science, geospatial analysis, and community-level adaptation. This platform reflects an ongoing effort to translate satellite data and spatial statistics into knowledge that is accessible, reproducible, and relevant to the populations most affected by climate change.</p>
+          <p>Research interests span flood vulnerability assessment, remote sensing (SAR and multispectral), spatial autocorrelation analysis, and the development of composite vulnerability frameworks for South Asian delta regions. Current work centers on the IFVIF (Integrated Flood Vulnerability and Impact Framework) — a multi-dimensional model for district-level flood risk characterization in Bangladesh.</p>
+          <p>This work is informed by the belief that rigorous environmental science, built with human-centered values and a commitment to open data, is among the most meaningful contributions a researcher can make toward global climate adaptation.</p>
+        </div>
+        <div class="connect-row" style="margin-top:1.5rem">
+          <a href="https://github.com/nanditasaha201920-blip" class="connect-link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            github.com/nanditasaha201920-blip
+          </a>
+          <a href="https://medium.com/@nanditasaha201920" class="connect-link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 9h10M7 12h7M7 15h5"/></svg>
+            medium.com/@nanditasaha201920
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH PROJECTS -->
+<section id="research-projects">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Research Projects</p>
+      <h2 class="section-title">Active &amp; Completed Work</h2>
+      <p class="section-subtitle">Ongoing research integrating satellite imagery, spatial statistics, and vulnerability frameworks across Bangladesh's flood-affected districts.</p>
+    </div>
+    <div class="rp-grid reveal">
+      <div class="rp-card">
+        <div class="rp-tag">Core Framework</div>
+        <h3>IFVIF — Integrated Flood Vulnerability and Impact Framework</h3>
+        <p>A composite vulnerability model combining physical flood exposure, socioeconomic sensitivity, and adaptive capacity across Bangladesh's 64 districts. The framework draws on SAR-derived inundation extent, WorldPop population density, infrastructure access indices, and poverty indicators to produce a spatially explicit vulnerability score (0–1) for each administrative unit.</p>
+        <div class="rp-meta">
+          <span class="rp-status">Manuscript in preparation</span>
+          &nbsp;·&nbsp; Nandita Saha, 2024–2025 &nbsp;·&nbsp; GEE + Python + QGIS
+        </div>
+      </div>
+      <div class="rp-card">
+        <div class="rp-tag">Satellite Analysis</div>
+        <h3>SAR Flood Inundation Mapping, Bangladesh 2015–2024</h3>
+        <p>Temporal analysis of Sentinel-1 C-band SAR imagery to map flood inundation extent across nine flood seasons (2015–2024). Threshold-based water detection combined with change detection algorithms produces consistent, cloud-independent inundation maps at 10m resolution. Results are used as primary inputs to the IFVIF exposure sub-index.</p>
+        <div class="rp-meta">
+          <span class="rp-status">Active</span>
+          &nbsp;·&nbsp; Sentinel-1 via GEE &nbsp;·&nbsp; Open workflows on GitHub
+        </div>
+      </div>
+      <div class="rp-card">
+        <div class="rp-tag">Vegetation &amp; Land Cover</div>
+        <h3>NDVI Temporal Analysis — Flood-Affected Agricultural Areas</h3>
+        <p>Multi-temporal NDVI analysis using Sentinel-2 (10m) to track vegetation stress, post-flood crop recovery, and longer-term land degradation trends across chars and low-lying agricultural zones. Time-series decomposition isolates flood-induced stress from seasonal variation and identifies areas of persistent vegetation decline.</p>
+        <div class="rp-meta">
+          <span class="rp-status">Active</span>
+          &nbsp;·&nbsp; Sentinel-2 MSI &nbsp;·&nbsp; 2015–2024 decadal coverage
+        </div>
+      </div>
+      <div class="rp-card">
+        <div class="rp-tag">Spatial Statistics</div>
+        <h3>Hotspot Analysis — District-Level Vulnerability Clustering</h3>
+        <p>Application of global Moran's I and local Getis-Ord Gi* statistics to IFVIF vulnerability scores to identify whether risk is spatially clustered. Results confirm statistically significant (p&lt;0.01) high-vulnerability clusters in northwestern and coastal districts, informing targeted policy and intervention prioritization.</p>
+        <div class="rp-meta">
+          <span class="rp-status">Completed</span>
+          &nbsp;·&nbsp; PySAL + GeoDa &nbsp;·&nbsp; 64 districts analyzed
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA VISUALS -->
+<section id="visuals">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Environmental Data Visuals</p>
+      <h2 class="section-title">Research Outputs</h2>
+      <p class="section-subtitle">Schematic representations of key analytical outputs from IFVIF, NDVI, and hotspot analyses.</p>
+    </div>
+
+    <div class="visuals-grid reveal">
+      <!-- Bangladesh Vulnerability Map -->
+      <div class="visual-panel">
+        <h4>Flood Vulnerability Index — Bangladesh Districts (IFVIF, schematic)</h4>
+        <svg viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+          <defs>
+            <linearGradient id="bg-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#d4ede8" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#d4ede8" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Country outline simplified -->
+          <rect width="340" height="300" fill="url(#bg-grad)" rx="2"/>
+          <!-- District grid — vulnerability colored cells representing Bangladesh's roughly 8-col x 9-row district layout -->
+          <!-- Row 1 (north) -->
+          <rect x="60" y="18" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <rect x="91" y="18" width="28" height="22" fill="#1D9E75" rx="1" opacity=".9"/>
+          <rect x="122" y="18" width="28" height="22" fill="#1D9E75" rx="1" opacity=".9"/>
+          <rect x="153" y="18" width="28" height="22" fill="#0F6E56" rx="1" opacity=".9"/>
+          <rect x="184" y="18" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <rect x="215" y="18" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <!-- Row 2 -->
+          <rect x="45" y="43" width="28" height="22" fill="#1D9E75" rx="1" opacity=".9"/>
+          <rect x="76" y="43" width="28" height="22" fill="#0F6E56" rx="1" opacity=".9"/>
+          <rect x="107" y="43" width="28" height="22" fill="#0F6E56" rx="1" opacity=".9"/>
+          <rect x="138" y="43" width="28" height="22" fill="#085041" rx="1" opacity=".9"/>
+          <rect x="169" y="43" width="28" height="22" fill="#1D9E75" rx="1" opacity=".9"/>
+          <rect x="200" y="43" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <rect x="231" y="43" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <!-- Row 3 -->
+          <rect x="45" y="68" width="28" height="22" fill="#085041" rx="1" opacity=".9"/>
+          <rect x="76" y="68" width="28" height="22" fill="#04342C" rx="1" opacity=".9"/>
+          <rect x="107" y="68" width="28" height="22" fill="#085041" rx="1" opacity=".9"/>
+          <rect x="138" y="68" width="28" height="22" fill="#0F6E56" rx="1" opacity=".9"/>
+          <rect x="169" y="68" width="28" height="22" fill="#1D9E75" rx="1" opacity=".9"/>
+          <rect x="200" y="68" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <rect x="231" y="68" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <!-- Row 4 (northwest — high risk) -->
+          <rect x="45" y="93" width="28" height="22" fill="#04342C" rx="1" opacity=".9"/>
+          <rect x="76" y="93" width="28" height="22" fill="#04342C" rx="1" opacity=".9"/>
+          <rect x="107" y="93" width="28" height="22" fill="#085041" rx="1" opacity=".9"/>
+          <rect x="138" y="93" width="28" height="22" fill="#0F6E56" rx="1" opacity=".9"/>
+          <rect x="169" y="93" width="28" height="22" fill="#1D9E75" rx="1" opacity=".9"/>
+          <rect x="200" y="93" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <rect x="231" y="93" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <!-- Row 5 -->
+          <rect x="60" y="118" width="28" height="22" fill="#04342C" rx="1" opacity=".9"/>
+          <rect x="91" y="118" width="28" height="22" fill="#085041" rx="1" opacity=".9"/>
+          <rect x="122" y="118" width="28" height="22" fill="#085041" rx="1" opacity=".9"/>
+          <rect x="153" y="118" width="28" height="22" fill="#1D9E75" rx="1" opacity=".9"/>
+          <rect x="184" y="118" width="28" height="22" fill="#1D9E75" rx="1" opacity=".9"/>
+          <rect x="215" y="118" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <!-- Row 6 (central) -->
+          <rect x="76" y="143" width="28" height="22" fill="#0F6E56" rx="1" opacity=".9"/>
+          <rect x="107" y="143" width="28" height="22" fill="#0F6E56" rx="1" opacity=".9"/>
+          <rect x="138" y="143" width="28" height="22" fill="#1D9E75" rx="1" opacity=".9"/>
+          <rect x="169" y="143" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <rect x="200" y="143" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <rect x="231" y="143" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <!-- Row 7 -->
+          <rect x="91" y="168" width="28" height="22" fill="#1D9E75" rx="1" opacity=".9"/>
+          <rect x="122" y="168" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <rect x="153" y="168" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <rect x="184" y="168" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <rect x="215" y="168" width="28" height="22" fill="#9FE1CB" rx="1" opacity=".9"/>
+          <!-- Row 8 (coastal — high risk) -->
+          <rect x="107" y="193" width="28" height="22" fill="#0F6E56" rx="1" opacity=".9"/>
+          <rect x="138" y="193" width="28" height="22" fill="#085041" rx="1" opacity=".9"/>
+          <rect x="169" y="193" width="28" height="22" fill="#04342C" rx="1" opacity=".9"/>
+          <rect x="200" y="193" width="28" height="22" fill="#04342C" rx="1" opacity=".9"/>
+          <!-- Row 9 (far south/Sundarbans) -->
+          <rect x="138" y="218" width="28" height="22" fill="#085041" rx="1" opacity=".9"/>
+          <rect x="169" y="218" width="28" height="22" fill="#085041" rx="1" opacity=".9"/>
+          <rect x="200" y="218" width="28" height="22" fill="#0F6E56" rx="1" opacity=".9"/>
+          <!-- Legend -->
+          <text x="14" y="260" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92">Vulnerability index</text>
+          <rect x="14" y="266" width="14" height="8" fill="#9FE1CB" rx="1"/>
+          <text x="31" y="273" font-family="Outfit,sans-serif" font-size="7.5" fill="#3b4f62">Low</text>
+          <rect x="60" y="266" width="14" height="8" fill="#1D9E75" rx="1"/>
+          <text x="77" y="273" font-family="Outfit,sans-serif" font-size="7.5" fill="#3b4f62">Moderate</text>
+          <rect x="120" y="266" width="14" height="8" fill="#0F6E56" rx="1"/>
+          <text x="137" y="273" font-family="Outfit,sans-serif" font-size="7.5" fill="#3b4f62">High</text>
+          <rect x="168" y="266" width="14" height="8" fill="#085041" rx="1"/>
+          <text x="185" y="273" font-family="Outfit,sans-serif" font-size="7.5" fill="#3b4f62">Very high</text>
+          <rect x="232" y="266" width="14" height="8" fill="#04342C" rx="1"/>
+          <text x="249" y="273" font-family="Outfit,sans-serif" font-size="7.5" fill="#3b4f62">Critical</text>
+          <!-- Labels -->
+          <text x="50" y="106" font-family="Outfit,sans-serif" font-size="7" fill="rgba(255,255,255,0.7)" text-anchor="middle">NW</text>
+          <text x="180" y="208" font-family="Outfit,sans-serif" font-size="7" fill="rgba(255,255,255,0.7)" text-anchor="middle">Coast</text>
+        </svg>
+        <p class="visual-note">Schematic district-level IFVIF composite score. Northwest and coastal districts exhibit critical vulnerability driven by inundation frequency, population density, and low adaptive capacity.</p>
+      </div>
+
+      <!-- NDVI Trend Chart -->
+      <div class="visual-panel">
+        <h4>NDVI Temporal Trend — Flood-Affected Agricultural Zones, 2015–2024</h4>
+        <svg viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+          <!-- Axes -->
+          <line x1="48" y1="20" x2="48" y2="240" stroke="#3b4f62" stroke-width=".8" opacity=".4"/>
+          <line x1="48" y1="240" x2="320" y2="240" stroke="#3b4f62" stroke-width=".8" opacity=".4"/>
+          <!-- Y gridlines + labels -->
+          <line x1="48" y1="60" x2="320" y2="60" stroke="#3b4f62" stroke-width=".4" stroke-dasharray="3,3" opacity=".25"/>
+          <line x1="48" y1="100" x2="320" y2="100" stroke="#3b4f62" stroke-width=".4" stroke-dasharray="3,3" opacity=".25"/>
+          <line x1="48" y1="140" x2="320" y2="140" stroke="#3b4f62" stroke-width=".4" stroke-dasharray="3,3" opacity=".25"/>
+          <line x1="48" y1="180" x2="320" y2="180" stroke="#3b4f62" stroke-width=".4" stroke-dasharray="3,3" opacity=".25"/>
+          <line x1="48" y1="220" x2="320" y2="220" stroke="#3b4f62" stroke-width=".4" stroke-dasharray="3,3" opacity=".25"/>
+          <text x="42" y="63" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="end">0.70</text>
+          <text x="42" y="103" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="end">0.60</text>
+          <text x="42" y="143" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="end">0.50</text>
+          <text x="42" y="183" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="end">0.40</text>
+          <text x="42" y="223" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="end">0.30</text>
+          <!-- X labels -->
+          <text x="58" y="253" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">2015</text>
+          <text x="88" y="253" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">2016</text>
+          <text x="118" y="253" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">2017</text>
+          <text x="148" y="253" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">2018</text>
+          <text x="178" y="253" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">2019</text>
+          <text x="208" y="253" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">2020</text>
+          <text x="238" y="253" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">2021</text>
+          <text x="268" y="253" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">2022</text>
+          <text x="298" y="253" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">2023–24</text>
+          <!-- Non-flood zone line (stable, higher NDVI) -->
+          <polyline points="58,90 88,85 118,88 148,82 178,80 208,84 238,78 268,76 298,80" fill="none" stroke="#9FE1CB" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Flood-affected zone line (declining) -->
+          <polyline points="58,118 88,124 118,130 148,145 178,138 208,152 238,158 268,165 298,170" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linejoin="round"/>
+          <!-- Flood year markers -->
+          <line x1="88" y1="20" x2="88" y2="240" stroke="#1D9E75" stroke-width=".6" stroke-dasharray="2,4" opacity=".5"/>
+          <line x1="178" y1="20" x2="178" y2="240" stroke="#1D9E75" stroke-width=".6" stroke-dasharray="2,4" opacity=".5"/>
+          <line x1="238" y1="20" x2="238" y2="240" stroke="#1D9E75" stroke-width=".6" stroke-dasharray="2,4" opacity=".5"/>
+          <text x="88" y="16" font-family="Outfit,sans-serif" font-size="7" fill="#1D9E75" text-anchor="middle">flood</text>
+          <text x="178" y="16" font-family="Outfit,sans-serif" font-size="7" fill="#1D9E75" text-anchor="middle">flood</text>
+          <text x="238" y="16" font-family="Outfit,sans-serif" font-size="7" fill="#1D9E75" text-anchor="middle">flood</text>
+          <!-- Legend -->
+          <line x1="58" y1="270" x2="80" y2="270" stroke="#9FE1CB" stroke-width="2"/>
+          <text x="84" y="274" font-family="Outfit,sans-serif" font-size="8" fill="#3b4f62">Non-flood zones</text>
+          <line x1="168" y1="270" x2="190" y2="270" stroke="#0F6E56" stroke-width="2"/>
+          <text x="194" y="274" font-family="Outfit,sans-serif" font-size="8" fill="#3b4f62">Flood-affected chars</text>
+          <!-- Y axis label -->
+          <text x="12" y="150" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" transform="rotate(-90,12,150)" text-anchor="middle">NDVI</text>
+        </svg>
+        <p class="visual-note">NDVI derived from Sentinel-2 (10m). Flood-affected riverine chars show a persistent declining trend (approx. −0.12 across the study period), with visible post-flood stress following major inundation years.</p>
+      </div>
+    </div>
+
+    <div class="visuals-grid reveal">
+      <!-- IFVIF Component Bar Chart -->
+      <div class="visual-panel">
+        <h4>IFVIF Sub-Index Scores — High-Risk Districts (mean values)</h4>
+        <svg viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+          <line x1="130" y1="20" x2="130" y2="210" stroke="#3b4f62" stroke-width=".8" opacity=".4"/>
+          <line x1="130" y1="210" x2="320" y2="210" stroke="#3b4f62" stroke-width=".8" opacity=".4"/>
+          <!-- Gridlines -->
+          <line x1="182" y1="20" x2="182" y2="210" stroke="#3b4f62" stroke-width=".4" stroke-dasharray="3,3" opacity=".2"/>
+          <line x1="234" y1="20" x2="234" y2="210" stroke="#3b4f62" stroke-width=".4" stroke-dasharray="3,3" opacity=".2"/>
+          <line x1="286" y1="20" x2="286" y2="210" stroke="#3b4f62" stroke-width=".4" stroke-dasharray="3,3" opacity=".2"/>
+          <text x="182" y="222" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">0.25</text>
+          <text x="234" y="222" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">0.50</text>
+          <text x="286" y="222" font-family="Outfit,sans-serif" font-size="8" fill="#6b7f92" text-anchor="middle">0.75</text>
+          <!-- Bars: Flood Exposure -->
+          <text x="125" y="47" font-family="Outfit,sans-serif" font-size="8.5" fill="#3b4f62" text-anchor="end">Flood exposure</text>
+          <rect x="131" y="35" width="152" height="14" fill="#04342C" rx="1" opacity=".85"/>
+          <text x="288" y="46" font-family="Outfit,sans-serif" font-size="8" fill="#085041">0.79</text>
+          <!-- Sensitivity -->
+          <text x="125" y="77" font-family="Outfit,sans-serif" font-size="8.5" fill="#3b4f62" text-anchor="end">Socioeconomic sensitivity</text>
+          <rect x="131" y="65" width="134" height="14" fill="#085041" rx="1" opacity=".85"/>
+          <text x="270" y="76" font-family="Outfit,sans-serif" font-size="8" fill="#085041">0.70</text>
+          <!-- Adaptive capacity (inverse) -->
+          <text x="125" y="107" font-family="Outfit,sans-serif" font-size="8.5" fill="#3b4f62" text-anchor="end">Low adaptive capacity</text>
+          <rect x="131" y="95" width="125" height="14" fill="#0F6E56" rx="1" opacity=".85"/>
+          <text x="261" y="106" font-family="Outfit,sans-serif" font-size="8" fill="#3b4f62">0.66</text>
+          <!-- Infrastructure -->
+          <text x="125" y="137" font-family="Outfit,sans-serif" font-size="8.5" fill="#3b4f62" text-anchor="end">Infrastructure deficit</text>
+          <rect x="131" y="125" width="108" height="14" fill="#1D9E75" rx="1" opacity=".85"/>
+          <text x="244" y="136" font-family="Outfit,sans-serif" font-size="8" fill="#3b4f62">0.57</text>
+          <!-- Population density -->
+          <text x="125" y="167" font-family="Outfit,sans-serif" font-size="8.5" fill="#3b4f62" text-anchor="end">Population exposure</text>
+          <rect x="131" y="155" width="98" height="14" fill="#5DCAA5" rx="1" opacity=".85"/>
+          <text x="234" y="166" font-family="Outfit,sans-serif" font-size="8" fill="#3b4f62">0.52</text>
+          <!-- Water insecurity -->
+          <text x="125" y="197" font-family="Outfit,sans-serif" font-size="8.5" fill="#3b4f62" text-anchor="end">Water insecurity</text>
+          <rect x="131" y="185" width="85" height="14" fill="#9FE1CB" rx="1" opacity=".85"/>
+          <text x="221" y="196" font-family="Outfit,sans-serif" font-size="8" fill="#3b4f62">0.45</text>
+          <!-- Title annotation -->
+          <text x="130" y="240" font-family="Outfit,sans-serif" font-size="7.5" fill="#6b7f92">Mean sub-index scores (0–1), 23 high-risk districts</text>
+        </svg>
+        <p class="visual-note">IFVIF sub-index decomposition showing relative contribution of each vulnerability dimension. Flood exposure and socioeconomic sensitivity are the dominant drivers in northwestern and coastal clusters.</p>
+      </div>
+
+      <!-- Hotspot visualization -->
+      <div class="visual-panel">
+        <h4>Getis-Ord Gi* — Spatial Clusters of Flood Vulnerability</h4>
+        <svg viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+          <rect width="340" height="260" fill="#d4ede8" fill-opacity=".15" rx="2"/>
+          <!-- Grid of districts as circles — sized by Gi* z-score -->
+          <!-- Hot spots (NW cluster) — large dark circles -->
+          <circle cx="80" cy="60" r="18" fill="#04342C" opacity=".85"/>
+          <circle cx="120" cy="55" r="16" fill="#04342C" opacity=".85"/>
+          <circle cx="80" cy="100" r="20" fill="#04342C" opacity=".9"/>
+          <circle cx="120" cy="95" r="17" fill="#085041" opacity=".85"/>
+          <circle cx="160" cy="60" r="12" fill="#085041" opacity=".8"/>
+          <circle cx="155" cy="100" r="14" fill="#085041" opacity=".8"/>
+          <circle cx="80" cy="140" r="15" fill="#085041" opacity=".8"/>
+          <circle cx="118" cy="135" r="11" fill="#0F6E56" opacity=".8"/>
+          <!-- Coastal hot spots -->
+          <circle cx="200" cy="180" r="17" fill="#04342C" opacity=".85"/>
+          <circle cx="235" cy="175" r="15" fill="#04342C" opacity=".85"/>
+          <circle cx="220" cy="210" r="13" fill="#085041" opacity=".8"/>
+          <circle cx="255" cy="205" r="11" fill="#0F6E56" opacity=".75"/>
+          <!-- Moderate risk -->
+          <circle cx="160" cy="140" r="10" fill="#1D9E75" opacity=".7"/>
+          <circle cx="195" cy="110" r="9" fill="#1D9E75" opacity=".7"/>
+          <circle cx="230" cy="100" r="8" fill="#1D9E75" opacity=".65"/>
+          <circle cx="265" cy="130" r="7" fill="#9FE1CB" opacity=".7"/>
+          <!-- Low risk / cold spots -->
+          <circle cx="270" cy="60" r="8" fill="#9FE1CB" opacity=".6"/>
+          <circle cx="300" cy="85" r="7" fill="#E1F5EE" opacity=".7" stroke="#9FE1CB" stroke-width="1"/>
+          <circle cx="295" cy="55" r="6" fill="#E1F5EE" opacity=".7" stroke="#9FE1CB" stroke-width="1"/>
+          <circle cx="300" cy="155" r="6" fill="#E1F5EE" opacity=".7" stroke="#9FE1CB" stroke-width="1"/>
+          <!-- Label annotations -->
+          <text x="100" y="78" font-family="Outfit,sans-serif" font-size="8" fill="rgba(255,255,255,0.8)" text-anchor="middle">NW hotspot</text>
+          <text x="228" y="194" font-family="Outfit,sans-serif" font-size="8" fill="rgba(255,255,255,0.8)" text-anchor="middle">Coastal</text>
+          <text x="285" y="70" font-family="Outfit,sans-serif" font-size="8" fill="#3b4f62" text-anchor="middle">Not significant</text>
+          <!-- Legend -->
+          <circle cx="22" cy="230" r="6" fill="#04342C" opacity=".9"/>
+          <text x="31" y="234" font-family="Outfit,sans-serif" font-size="7.5" fill="#3b4f62">HH cluster</text>
+          <circle cx="88" cy="230" r="6" fill="#1D9E75" opacity=".9"/>
+          <text x="97" y="234" font-family="Outfit,sans-serif" font-size="7.5" fill="#3b4f62">Moderate</text>
+          <circle cx="154" cy="230" r="6" fill="#E1F5EE" opacity=".9" stroke="#9FE1CB" stroke-width="1"/>
+          <text x="163" y="234" font-family="Outfit,sans-serif" font-size="7.5" fill="#3b4f62">Not significant</text>
+          <text x="14" y="250" font-family="Outfit,sans-serif" font-size="7" fill="#6b7f92">Circle size proportional to Gi* z-score magnitude</text>
+        </svg>
+        <p class="visual-note">Local Gi* statistics (p&lt;0.01, FDR-corrected). Statistically significant high-high clusters concentrate in the northwest (Rangpur, Rajshahi divisions) and coastal districts (Barisal, Khulna divisions), confirming spatially structured vulnerability.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BANGLADESH CLIMATE CONTEXT -->
+<section id="bangladesh">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Bangladesh Climate Context</p>
+      <h2 class="section-title">Local Relevance, Global Significance</h2>
+      <p class="section-subtitle">Bangladesh is among the world's most compelling cases for climate adaptation research — not as a passive subject, but as a source of hard-won resilience knowledge.</p>
+    </div>
+    <div class="bangladesh-grid reveal">
+      <ul class="vulnerability-list">
+        <li>
+          <span class="vuln-num">01</span>
+          <div class="vuln-content">
+            <h4>Flood Vulnerability</h4>
+            <p>Positioned at the confluence of the Ganges, Brahmaputra, and Meghna deltas, Bangladesh experiences annual monsoon flooding affecting up to 30% of national territory. Extreme events (2017, 2019, 2022) inundated critical agricultural and urban zones.</p>
+          </div>
+        </li>
+        <li>
+          <span class="vuln-num">02</span>
+          <div class="vuln-content">
+            <h4>Climate-Sensitive Communities</h4>
+            <p>Rural populations in floodplains and coastal chars face compounding risks: flood exposure, arsenic-contaminated groundwater, saline intrusion, and seasonal agricultural disruption — concentrated among communities with the least adaptive resources.</p>
+          </div>
+        </li>
+        <li>
+          <span class="vuln-num">03</span>
+          <div class="vuln-content">
+            <h4>Adaptation Challenges</h4>
+            <p>Existing early warning systems, embankment infrastructure, and community flood management programs have reduced mortality but face limitations in addressing displacement, land loss, and structural poverty that climate change is intensifying.</p>
+          </div>
+        </li>
+        <li>
+          <span class="vuln-num">04</span>
+          <div class="vuln-content">
+            <h4>Resilience Systems</h4>
+            <p>Community-led adaptation — floating gardens (baira), elevated homesteads, and cyclone-resistant construction — offer transferable models for other delta regions globally. Bangladesh's adaptation experience holds lessons beyond its borders.</p>
+          </div>
+        </li>
+      </ul>
+      <div>
+        <p style="font-size:.92rem;color:var(--ink-mid);line-height:1.85;margin-bottom:1.25rem">Bangladesh represents an urgent and instructive case for environmental research. High exposure combined with a predominantly rural, dense population creates conditions demanding spatially precise intelligence — not five years from now, but in each monsoon season.</p>
+        <p style="font-size:.92rem;color:var(--ink-mid);line-height:1.85;margin-bottom:1.5rem">The research produced here aims to be usable by district planners, development organizations, and community adaptation programs — not only legible to academic audiences.</p>
+        <div class="stat-block">
+          <h3>Bangladesh — Climate Profile</h3>
+          <div class="stat-row"><span>Annual flood-affected population</span><span class="stat-val">~7 million</span></div>
+          <div class="stat-row"><span>Territory at risk (sea-level rise)</span><span class="stat-val">19% of land area</span></div>
+          <div class="stat-row"><span>Major river systems</span><span class="stat-val">700+</span></div>
+          <div class="stat-row"><span>Climate displacement estimate, 2050</span><span class="stat-val">13 million</span></div>
+          <div class="stat-row"><span>Global climate vulnerability rank</span><span class="stat-val">Top 10</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY INDICATORS -->
+<section id="insights">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Key Indicators</p>
+      <h2 class="section-title">Selected Research Metrics</h2>
+    </div>
+    <div class="insights-grid reveal">
+      <div class="insight-card">
+        <span class="insight-num">0.73</span>
+        <div class="insight-label">Flood Vulnerability Index</div>
+        <div class="insight-desc">Mean IFVIF composite, high-risk districts (scale 0–1)</div>
+      </div>
+      <div class="insight-card">
+        <span class="insight-num">−0.12</span>
+        <div class="insight-label">NDVI Trend</div>
+        <div class="insight-desc">Vegetation decline, flood-affected chars, 2015–2024</div>
+      </div>
+      <div class="insight-card">
+        <span class="insight-num">0.61</span>
+        <div class="insight-label">Moran's I</div>
+        <div class="insight-desc">Spatial autocorrelation of vulnerability index (p &lt; 0.01)</div>
+      </div>
+      <div class="insight-card">
+        <span class="insight-num">23</span>
+        <div class="insight-label">Hotspot Districts</div>
+        <div class="insight-desc">Statistically significant high-risk clusters (Gi*, p &lt; 0.05)</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="methods-row">
+        <span class="method-tag">SAR Flood Mapping</span>
+        <span class="method-tag">NDVI Analysis</span>
+        <span class="method-tag">Moran's I</span>
+        <span class="method-tag">Getis-Ord Gi*</span>
+        <span class="method-tag">IFVIF Framework</span>
+        <span class="method-tag">Population Exposure Overlay</span>
+        <span class="method-tag">Google Earth Engine</span>
+        <span class="method-tag">PySAL</span>
+        <span class="method-tag">Principal Component Analysis</span>
+        <span class="method-tag">Spatial Regression</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA SOURCES -->
+<section id="data">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Data Infrastructure</p>
+      <h2 class="section-title">Data Sources</h2>
+      <p class="section-subtitle">All analyses use open, institutionally maintained datasets — reproducibility and transparency are core commitments of this research.</p>
+    </div>
+    <div class="sources-grid reveal">
+      <div class="source-card">
+        <div class="source-badge">SAR / Microwave</div>
+        <h4>Sentinel-1</h4>
+        <p>ESA Copernicus C-band SAR for all-weather flood inundation mapping at 10m resolution.</p>
+      </div>
+      <div class="source-card">
+        <div class="source-badge">Multispectral</div>
+        <h4>Sentinel-2</h4>
+        <p>ESA Copernicus optical imagery for NDVI, land cover classification, and vegetation change detection.</p>
+      </div>
+      <div class="source-card">
+        <div class="source-badge">Earth Observation</div>
+        <h4>NASA EarthData</h4>
+        <p>MODIS surface reflectance, SRTM elevation, GRACE water storage, and GPM precipitation records.</p>
+      </div>
+      <div class="source-card">
+        <div class="source-badge">Processing Platform</div>
+        <h4>Google Earth Engine</h4>
+        <p>Cloud-based geospatial processing environment for planetary-scale satellite time-series analysis.</p>
+      </div>
+      <div class="source-card">
+        <div class="source-badge">Population</div>
+        <h4>WorldPop</h4>
+        <p>High-resolution gridded population data disaggregated by age and sex for exposure analysis.</p>
+      </div>
+      <div class="source-card">
+        <div class="source-badge">Spatial Analysis</div>
+        <h4>PySAL / GeoDa</h4>
+        <p>Open-source spatial analysis libraries for autocorrelation, hotspot detection, and spatial regression.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH INTERESTS + PUBLICATIONS -->
+<section id="publications">
+  <div class="container">
+    <div class="two-col">
+      <div class="reveal">
+        <p class="section-label">Research Interests</p>
+        <h2 class="section-title">Areas of Focus</h2>
+        <ul class="interest-list">
+          <li>Climate resilience and adaptive capacity</li>
+          <li>Flood vulnerability assessment</li>
+          <li>Remote sensing and Earth observation</li>
+          <li>Geospatial environmental intelligence</li>
+          <li>Human-centered sustainability communication</li>
+          <li>Environmental displacement and equity</li>
+          <li>Interdisciplinary climate systems research</li>
+          <li>Open-science and reproducible workflows</li>
+          <li>Bangladesh and South Asian environmental policy</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <p class="section-label">Publications &amp; Work</p>
+        <h2 class="section-title">Selected Output</h2>
+        <ul class="pub-list">
+          <li class="pub-item">
+            <div class="pub-type">Manuscript in Preparation</div>
+            <div class="pub-title">Integrated Flood Vulnerability and Impact Framework (IFVIF): A Spatial Analysis of Bangladesh's High-Risk Districts</div>
+            <div class="pub-meta">Nandita Saha — 2024–2025</div>
+          </li>
+          <li class="pub-item">
+            <div class="pub-type">Environmental Writing</div>
+            <div class="pub-title">Climate Intelligence, Data Access, and the Global South</div>
+            <div class="pub-meta"><a href="https://medium.com/@nanditasaha201920" target="_blank" rel="noopener">medium.com/@nanditasaha201920</a></div>
+          </li>
+          <li class="pub-item">
+            <div class="pub-type">Data &amp; Code</div>
+            <div class="pub-title">SAR Flood Mapping Workflows — Bangladesh 2015–2024</div>
+            <div class="pub-meta"><a href="https://github.com/nanditasaha201920-blip" target="_blank" rel="noopener">github.com/nanditasaha201920-blip</a></div>
+          </li>
+          <li class="pub-item">
+            <div class="pub-type">Visualization</div>
+            <div class="pub-title">Flood Vulnerability Atlas: District-Level Risk Mapping, Bangladesh</div>
+            <div class="pub-meta">Climate visualization project — GEE + Python</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUTURE DIRECTIONS -->
+<section id="future">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Future Directions</p>
+      <h2 class="section-title">Where the Research Is Headed</h2>
+    </div>
+    <div class="future-grid reveal">
+      <div class="future-card">
+        <h3>Near-Real-Time Flood Monitoring</h3>
+        <p>Integrating SAR-based inundation detection with community alert systems for localized, timely flood early warning in high-risk districts.</p>
+      </div>
+      <div class="future-card">
+        <h3>Climate Adaptation Indicators</h3>
+        <p>Developing longitudinal metrics that track not just exposure, but changing adaptive capacity over time — measuring communities' evolving resilience.</p>
+      </div>
+      <div class="future-card">
+        <h3>Regional Comparative Analysis</h3>
+        <p>Extending the IFVIF framework to other South and Southeast Asian delta regions to enable systematic cross-national vulnerability comparison.</p>
+      </div>
+      <div class="future-card">
+        <h3>Responsible ML in Flood Prediction</h3>
+        <p>Exploring interpretable machine learning for flood extent prediction and vegetation stress detection, with emphasis on open access and equity in use.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONNECT -->
+<section id="connect">
+  <div class="container reveal">
+    <p class="section-label">Connect</p>
+    <h2 class="section-title">Get in Touch</h2>
+    <p style="font-size:.92rem;color:var(--ink-mid);max-width:520px;margin-bottom:.5rem">Open to research collaboration, academic exchange, and development-oriented partnerships in climate resilience, remote sensing, and environmental intelligence.</p>
+    <div class="connect-row">
+      <a href="https://github.com/nanditasaha201920-blip" class="connect-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        GitHub
+      </a>
+      <a href="https://medium.com/@nanditasaha201920" class="connect-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 9h10M7 12h7M7 15h5"/></svg>
+        Medium
+      </a>
+      <a href="https://linkedin.com" class="connect-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="mailto:nanditasaha@example.com" class="connect-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email
+      </a>
+    </div>
+    <div class="ethics-banner">
+      <strong>Accessibility, Ethics &amp; Open Science:</strong> GlacioAware is committed to accessible environmental communication — making geospatial research comprehensible to policymakers, practitioners, and the communities whose vulnerabilities are being studied. All methodologies prioritize transparency and reproducibility. Environmental data is never neutral; this research is conducted with explicit awareness of whose conditions are being analyzed and to whose benefit that analysis is directed.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">GlacioAware</div>
+      <div class="footer-credit">Designed &amp; Developed by Nandita Saha</div>
+    </div>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#research-projects">Research</a>
+      <a href="#bangladesh">Bangladesh</a>
+      <a href="#publications">Work</a>
+      <a href="https://github.com/nanditasaha201920-blip" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://medium.com/@nanditasaha201920" target="_blank" rel="noopener">Medium</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.07,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
